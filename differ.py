@@ -78,7 +78,13 @@ def setup_site_config(url: str) -> SiteConfig:
     
     ext = tldextract.extract(base_url)
     timestamp = str(int(datetime.datetime.now().timestamp()))
-    domain_dir = Path(f"{ext.domain}.{ext.suffix}")
+    
+    # Include subdomain in folder name if it exists
+    if ext.subdomain:
+        domain_dir = Path(f"{ext.subdomain}.{ext.domain}.{ext.suffix}")
+    else:
+        domain_dir = Path(f"{ext.domain}.{ext.suffix}")
+        
     output_dir = domain_dir / timestamp
     
     return SiteConfig(
