@@ -86,7 +86,12 @@ def setup_domain_dir(url: str) -> Path:
     base_url = f"{parsed.scheme}://{parsed.netloc}"
     
     ext = tldextract.extract(base_url)
-    domain_dir = Path(f"{ext.domain}.{ext.suffix}")
+    
+    # Include subdomain in the directory name if it exists
+    if ext.subdomain:
+        domain_dir = Path(f"{ext.subdomain}.{ext.domain}.{ext.suffix}")
+    else:
+        domain_dir = Path(f"{ext.domain}.{ext.suffix}")
     
     if not domain_dir.exists():
         print(f"Error: No data directory found for {domain_dir}")
@@ -594,7 +599,12 @@ def main() -> None:
     # Extract domain from URL
     parsed = urlparse(args.site)
     ext = tldextract.extract(parsed.netloc)
-    domain = f"{ext.domain}.{ext.suffix}"
+    
+    # Include subdomain in the domain name if it exists
+    if ext.subdomain:
+        domain = f"{ext.subdomain}.{ext.domain}.{ext.suffix}"
+    else:
+        domain = f"{ext.domain}.{ext.suffix}"
     
     # Get domain directory
     domain_dir = setup_domain_dir(args.site)
