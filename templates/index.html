@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitemap Diff Report - {{ domain }}</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Sitemap Diff Report for {{ domain }}</h1>
+        
+        <h2>Summary</h2>
+        <p>Total runs: {{ runs_count }}</p>
+        <p>Total URLs added: <span class="new">{{ total_added }}</span></p>
+        <p>Total URLs deleted: <span class="deleted">{{ total_deleted }}</span></p>
+        
+        <h2>Trends Over Time</h2>
+        <div class="chart-container">
+            <canvas id="diffChart"></canvas>
+        </div>
+        
+        <h2>All Runs</h2>
+        <table>
+            <tr>
+                <th>Timestamp</th>
+                <th>Added</th>
+                <th>Deleted</th>
+                <th>Report</th>
+            </tr>
+            {% for run in runs %}
+            <tr>
+                <td>{{ run.formatted_timestamp }}</td>
+                <td class="new">{{ run.new_count }}</td>
+                <td class="deleted">{{ run.deleted_count }}</td>
+                <td>
+                    {% if run.has_changes %}
+                    <a href="report_{{ run.timestamp }}.html">View Report</a>
+                    {% else %}
+                    <span class="no-changes">No changes</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    
+    <script src="static/js/charts.js"></script>
+    <script>
+        // Parse the chart data from the server
+        const chartData = {{ chart_data|safe }};
+        
+        // Create the chart
+        document.addEventListener('DOMContentLoaded', function() {
+            createChart(chartData);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitemap Diff Report - {{ timestamp }}</title>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <a class="back-link" href="index.html">&larr; Back to overview</a>
+        
+        <h1>Sitemap Diff Report</h1>
+        <p><strong>Scan time:</strong> {{ timestamp }}</p>
+        
+        <h2>Summary</h2>
+        <p>New URLs: <span class="new">{{ new_urls|length }}</span></p>
+        <p>Deleted URLs: <span class="deleted">{{ deleted_urls|length }}</span></p>
+        
+        <h2>New URLs</h2>
+        {% if new_urls %}
+        <table>
+            <tr><th>URL</th></tr>
+            {% for url in new_urls %}
+            <tr><td class="new">{{ url }}</td></tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No new URLs found.</p>
+        {% endif %}
+        
+        <h2>Deleted URLs</h2>
+        {% if deleted_urls %}
+        <table>
+            <tr><th>URL</th></tr>
+            {% for url in deleted_urls %}
+            <tr><td class="deleted">{{ url }}</td></tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No deleted URLs found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
