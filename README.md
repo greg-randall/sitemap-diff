@@ -18,7 +18,7 @@ A comprehensive tool for tracking and visualizing website content changes by mon
 ### Prerequisites
 
 ```bash
-pip install requests tldextract pandas usp tqdm jinja2
+pip install requests tldextract pandas ultimate-sitemap-parser tqdm jinja2
 ```
 
 ### Setup
