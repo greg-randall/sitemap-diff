@@ -135,19 +135,28 @@ def format_timestamp(unix_timestamp: str) -> str:
     return f"{date_part} {time_part}"
 
 
-def get_sitemap_nodes(tree) -> List:
+def get_sitemap_nodes(tree, base_url: str) -> List:
     """
-    Get sitemap nodes, filtering out robots.txt.
+    Get sitemap nodes, filtering out robots.txt and homepage URLs.
     
     Args:
         tree: Sitemap tree
+        base_url: Base URL of the site
         
     Returns:
         List of filtered sitemap nodes
     """
+    # Normalize base URL with and without trailing slash
+    base_url_variants = [base_url]
+    if base_url.endswith('/'):
+        base_url_variants.append(base_url[:-1])
+    else:
+        base_url_variants.append(base_url + '/')
+    
     return [
         node for node in tree.all_sitemaps() 
-        if not node.url.lower().endswith('/robots.txt')
+        if not node.url.lower().endswith('/robots.txt') and
+        node.url not in base_url_variants
     ]
 
 
@@ -560,7 +569,8 @@ def main() -> None:
         tree = sitemap_tree_for_homepage(config.base_url)
         
         # Get sitemap nodes (filtering out robots.txt)
-        sitemap_nodes = get_sitemap_nodes(tree)
+        sitemap_nodes = get_sitemap_nodes(tree, config.base_url)
+        
         if not sitemap_nodes:
             logging.warning("No sitemaps found")
             sys.exit(1)
