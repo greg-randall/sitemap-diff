@@ -22,7 +22,7 @@
         <table>
             <tr><th>URL</th></tr>
             {% for url in new_urls %}
-            <tr><td class="new">{{ url }}</td></tr>
+            <tr><td class="new"><a href="{{ url }}" target="_blank">{{ url }}</a></td></tr>
             {% endfor %}
         </table>
         {% else %}
@@ -34,7 +34,7 @@
         <table>
             <tr><th>URL</th></tr>
             {% for url in deleted_urls %}
-            <tr><td class="deleted">{{ url }}</td></tr>
+            <tr><td class="deleted"><a href="{{ url }}" target="_blank" class="deleted">{{ url }}</a></td></tr>
             {% endfor %}
         </table>
         {% else %}
